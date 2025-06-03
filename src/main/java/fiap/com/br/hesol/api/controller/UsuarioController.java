@@ -40,11 +40,16 @@ public class UsuarioController {
                                               @RequestBody UsuarioUpdateDTO dto,  @AuthenticationPrincipal UserDetails userDetails) {
         var usuarioOptional = repository.findById(id);
 
+
         if (usuarioOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         var usuario = usuarioOptional.get();
+
+        if (!usuario.getEmail().equals(userDetails.getUsername())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Você não tem permissão para altera outro usuário");
+        }
 
         if (dto.getNome() != null) {
             usuario.setNome(dto.getNome());
