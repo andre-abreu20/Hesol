@@ -1,45 +1,35 @@
 package fiap.com.br.hesol.api.dto;
 
 import fiap.com.br.hesol.domain.model.Leitura;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
-import org.springframework.hateoas.Link;
+import org.mapstruct.Mapper;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@Mapper(componentModel = "spring")
 public class UsuarioDTO extends RepresentationModel<UsuarioDTO> {
 
-    Integer id_usuario;
+    private Integer id_usuario;
+    private String nome;
+    private String email;
+    private List<Leitura> leituras;
 
-    @NotNull(message = "O nome não pode ser nulo")
-    @NotBlank(message = "O nome não pode ser em branco")
-    String nome;
-
-    @NotNull(message = "O email não pode ser nulo")
-    @NotBlank(message = "O email não pode ser em branco")
-    String email;
-
-    @NotNull(message = "A senha não pode ser nula")
-    @NotBlank(message = "A senha não pode ser em branco")
-    String senha;
-
-    List<Leitura> leituras = new ArrayList<Leitura>();
-
-    public UsuarioDTO(){
-
+    public UsuarioDTO() {
     }
 
-    public UsuarioDTO(Integer id_usuario, String nome, String email, String senha, List<Leitura> leituras) {
-        super();
+    public UsuarioDTO(Integer id_usuario, String nome, String email, List<Leitura> leituras) {
         this.id_usuario = id_usuario;
         this.nome = nome;
         this.email = email;
-        this.senha = senha;
         this.leituras = leituras;
+    }
+
+    public Integer getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(Integer id_usuario) {
+        this.id_usuario = id_usuario;
     }
 
     public String getNome() {
@@ -58,11 +48,11 @@ public class UsuarioDTO extends RepresentationModel<UsuarioDTO> {
         this.email = email;
     }
 
-    public String getSenha() {
-        return senha;
+    public List<Leitura> getLeituras() {
+        return leituras;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setLeituras(List<Leitura> leituras) {
+        this.leituras = leituras;
     }
 }

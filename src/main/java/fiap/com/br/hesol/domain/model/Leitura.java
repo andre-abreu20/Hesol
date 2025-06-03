@@ -1,5 +1,6 @@
 package fiap.com.br.hesol.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -12,16 +13,19 @@ import lombok.Setter;
 @Getter @Setter
 public class Leitura {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "leitura_seq")
+    @SequenceGenerator(name = "leitura_seq", sequenceName = "LEITURA_SEQ", allocationSize = 1)
     @Column(name = "id_leitura")
-    private Integer id_leitura;
+    private Long id_leitura;
 
-    @ManyToOne
-    @JoinColumn(name = "HS_T_USUARIO_id_usuario")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "HS_T_USUARIO_id_usuario", nullable = false)
+    @JsonBackReference
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "HS_T_SENSOR_id_sensor")
+    @JoinColumn(name = "HS_T_SENSOR_id_sensor", nullable = false)
     private Sensor sensor;
 
     private Double temperatura;
@@ -32,9 +36,13 @@ public class Leitura {
 
     private Double poluicao_aqi;
 
-    private Number resultado;
+    private Double resultado;
 
-    public Leitura(Integer id_leitura, Double temperatura, Double co2, Double umidade, Double poluicao_aqi, Number resultado) {
+    public Leitura() {
+
+    }
+
+    public Leitura(Long id_leitura, Double temperatura, Double co2, Double umidade, Double poluicao_aqi, Double resultado) {
         this.id_leitura = id_leitura;
         this.temperatura = temperatura;
         this.co2 = co2;
@@ -43,16 +51,31 @@ public class Leitura {
         this.resultado = resultado;
     }
 
-    public Integer getId_leitura() {
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public Long getId_leitura() {
         return id_leitura;
     }
 
-    public void setId_leitura(Integer id_leitura) {
+    public void setId_leitura(Long id_leitura) {
         this.id_leitura = id_leitura;
     }
 
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
+    }
 
-    public Number getTemperatura() {
+    public Double getTemperatura() {
         return temperatura;
     }
 
@@ -60,7 +83,7 @@ public class Leitura {
         this.temperatura = temperatura;
     }
 
-    public Number getCo2() {
+    public Double getCo2() {
         return co2;
     }
 
@@ -68,7 +91,7 @@ public class Leitura {
         this.co2 = co2;
     }
 
-    public Number getUmidade() {
+    public Double getUmidade() {
         return umidade;
     }
 
@@ -76,7 +99,7 @@ public class Leitura {
         this.umidade = umidade;
     }
 
-    public Number getPoluicao_aqi() {
+    public Double getPoluicao_aqi() {
         return poluicao_aqi;
     }
 
@@ -84,16 +107,16 @@ public class Leitura {
         this.poluicao_aqi = poluicao_aqi;
     }
 
-    public Number getResultado() {
+    public Double getResultado() {
         return resultado;
     }
 
-    public void setResultado(Number resultado) {
+    public void setResultado(Double resultado) {
         this.resultado = CalcularResultado();
     }
 
-    public Integer CalcularResultado(){
-        int total = 0;
+    public Double CalcularResultado(){
+        double total = 0;
 
         // Temperatura
         if (this.temperatura >= 18 && temperatura <= 25) {

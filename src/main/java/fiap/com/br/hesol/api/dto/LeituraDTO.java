@@ -1,18 +1,14 @@
 package fiap.com.br.hesol.api.dto;
 
-import fiap.com.br.hesol.domain.model.Sensor;
-import fiap.com.br.hesol.domain.model.Usuario;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.hateoas.RepresentationModel;
 
 public class LeituraDTO extends RepresentationModel<LeituraDTO> {
-    private Integer id_leitura;
 
-    private Integer usuario_id;
+    private Long id_leitura;
 
-    private Integer sensor_id;
+    @NotNull(message = "O ID do sensor não pode ser nulo")
+    private Integer id_sensor;
 
     @NotNull(message = "A temperatura não pode ser nula")
     private Double temperatura;
@@ -26,5 +22,63 @@ public class LeituraDTO extends RepresentationModel<LeituraDTO> {
     @NotNull(message = "A poluição não pode ser nula")
     private Double poluicao_aqi;
 
-    private Number resultado;
+    private Double resultado;
+
+    // Getters e Setters
+
+    public Long getId_leitura() {
+        return id_leitura;
+    }
+
+    public void setId_leitura(Long id_leitura) {
+        this.id_leitura = id_leitura;
+    }
+
+    public Integer getId_sensor() {
+        return id_sensor;
+    }
+
+    public void setId_sensor(Integer id_sensor) {
+        this.id_sensor = id_sensor;
+    }
+
+    public Double getTemperatura() {
+        return temperatura;
+    }
+
+    public void setTemperatura(Double temperatura) {
+        this.temperatura = temperatura;
+    }
+
+    public Double getCo2() {
+        return co2;
+    }
+
+    public void setCo2(Double co2) {
+        this.co2 = co2;
+    }
+
+    public Double getUmidade() {
+        return umidade;
+    }
+
+    public void setUmidade(Double umidade) {
+        this.umidade = umidade;
+    }
+
+    public Double getPoluicao_aqi() {
+        return poluicao_aqi;
+    }
+
+    public void setPoluicao_aqi(Double poluicao_aqi) {
+        this.poluicao_aqi = poluicao_aqi;
+    }
+
+    public Double getResultado() {
+        return resultado;
+    }
+
+    public void setResultado(Double resultado) {
+        this.resultado = resultado;
+    }
 }
